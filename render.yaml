@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: gcc-atlas
+    runtime: node
+    plan: free
+    buildCommand: ""
+    startCommand: node server.js
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
