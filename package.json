@@ -1,0 +1,12 @@
+{
+  "name": "gcc-atlas",
+  "version": "1.0.0",
+  "description": "Evidence sheets for India's GCC market, with an API that keeps the data fresh",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev:mock": "MOCK=1 ADMIN_TOKEN=dev node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

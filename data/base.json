@@ -1,0 +1,499 @@
+{
+  "version": "2026-10-12",
+  "sources": {
+    "zn26": {
+      "name": "Zinnov-nasscom India GCC Landscape 2026 (via Flexiple)",
+      "url": "https://flexiple.com/gcc/statistics",
+      "date": "2026-02-01"
+    },
+    "zin25": {
+      "name": "Zinnov, 5 shifts in India's GCC story in 2025",
+      "url": "https://zinnov.com/centers-of-excellence/5-shifts-defining-indias-global-capability-centers-gccs-story-in-2025-blog",
+      "date": "2026-01-08"
+    },
+    "vest": {
+      "name": "Vestian Research (via IANS and Realty Today)",
+      "url": "https://ianslive.in/india-houses-nearly-53-pc-of-worlds-global-capability-centres--20250721143925",
+      "date": "2025-07-21"
+    },
+    "ficci": {
+      "name": "FICCI and Anarock, Hyderabad report (via YourStory)",
+      "url": "https://yourstory.com/2026/09/hyderabad-houses-515-gccs-to-add-50-70-in-next-1-year-report",
+      "date": "2026-09-01"
+    },
+    "jll": {
+      "name": "JLL India (via Flexiple)",
+      "url": "https://flexiple.com/gcc/statistics",
+      "date": "2026-02-01"
+    },
+    "kagov": {
+      "name": "Karnataka and legal summary (via Mondaq)",
+      "url": "https://www.mondaq.com/choosing-the-right-location-in-india-for-your-gcc/1819112",
+      "date": "2026-07-17"
+    },
+    "crem1": {
+      "name": "Office market summary, Q1 CY26 (Crematrix)",
+      "url": "https://www.crematrix.com/blog/india-office-market-q1-cy26-key-trends-and-city-wise-performance/",
+      "date": "2026-03-31"
+    },
+    "crem2": {
+      "name": "Office market summary, Q2 CY26 (Crematrix)",
+      "url": "https://www.crematrix.com/blog/?p=3949",
+      "date": "2026-06-30"
+    },
+    "cw": {
+      "name": "Cushman & Wakefield Q2 2026 Office Market Beat (via Asianet)",
+      "url": "https://newsable.asianetnews.com/business/gcc-leasing-surges-38-in-h1-2026-bengaluru-remains-top-market-articleshow-fc71mzn",
+      "date": "2026-08-21"
+    },
+    "sal": {
+      "name": "Engineer pay by city (Flexiple)",
+      "url": "https://flexiple.com/gcc/statistics",
+      "date": "2026-08-01"
+    },
+    "reu": {
+      "name": "Nasscom-Zinnov market size (via Reuters)",
+      "url": "https://theprint.in/india/indias-global-centre-market-to-grow-to-105-billion-by-2030-says-nasscom-zinnov-report/2263317/",
+      "date": "2024-12-01"
+    },
+    "pol": {
+      "name": "State GCC policy summaries (Taxguru, ICAI, Finance Story, SSF)",
+      "url": "https://taxguru.in/?p=1036491",
+      "date": "2025-11-03"
+    },
+    "tl": {
+      "name": "Launch timelines (Wisemonk, ANSR, Vinsys)",
+      "url": "https://www.wisemonk.io/blogs/timeline-to-launch-a-gcc-in-india",
+      "date": "2026-01-01"
+    }
+  },
+  "claims": [
+    {
+      "label": "Vestian Research",
+      "note": "stated as GCCs",
+      "value": 1700,
+      "kind": "gcc",
+      "src": "vest"
+    },
+    {
+      "label": "Zinnov",
+      "note": "stated as centres, end 2025",
+      "value": 1760,
+      "kind": "centres",
+      "src": "zin25"
+    },
+    {
+      "label": "Flexiple compilation",
+      "note": "top of a 1,700-1,950 range",
+      "value": 1950,
+      "kind": "gcc",
+      "src": "zn26"
+    },
+    {
+      "label": "Zinnov-nasscom FY26",
+      "note": "companies with a GCC",
+      "value": 2117,
+      "kind": "gcc",
+      "src": "zn26"
+    },
+    {
+      "label": "FICCI-Anarock, implied",
+      "note": "Hyderabad 515 is about 20%",
+      "value": 2575,
+      "kind": "derived",
+      "src": "ficci"
+    },
+    {
+      "label": "Zinnov-nasscom FY26",
+      "note": "individual centres",
+      "value": 3728,
+      "kind": "centres",
+      "src": "zn26"
+    }
+  ],
+  "cityClaims": [
+    {
+      "city": "Bengaluru",
+      "points": [
+        [
+          487,
+          "Vestian",
+          "vest"
+        ],
+        [
+          500,
+          "Karnataka govt, 500+",
+          "kagov"
+        ],
+        [
+          875,
+          "legal summary, 875+ units",
+          "kagov"
+        ],
+        [
+          900,
+          "JLL, 900+ units",
+          "jll"
+        ]
+      ]
+    },
+    {
+      "city": "Hyderabad",
+      "points": [
+        [
+          273,
+          "Vestian",
+          "vest"
+        ],
+        [
+          515,
+          "FICCI-Anarock, Mar 2026",
+          "ficci"
+        ]
+      ]
+    }
+  ],
+  "share": {
+    "src": "vest",
+    "parts": [
+      {
+        "label": "Bengaluru",
+        "pct": 29,
+        "derived": false
+      },
+      {
+        "label": "Hyderabad",
+        "pct": 16,
+        "derived": true
+      },
+      {
+        "label": "Pune",
+        "pct": 11,
+        "derived": false
+      },
+      {
+        "label": "Chennai",
+        "pct": 10,
+        "derived": false
+      },
+      {
+        "label": "NCR + Mumbai",
+        "pct": 28,
+        "derived": true
+      },
+      {
+        "label": "Other",
+        "pct": 6,
+        "derived": true
+      }
+    ]
+  },
+  "market": {
+    "fy24": 64.6,
+    "lo2030": 99,
+    "hi2030": 105,
+    "src": "reu"
+  },
+  "cities": {
+    "Bengaluru": {
+      "rent": [
+        93.7,
+        "crem2"
+      ],
+      "vac": [
+        9.6,
+        "crem2"
+      ],
+      "centres": [
+        487,
+        "vest"
+      ],
+      "share": [
+        52,
+        "cw"
+      ],
+      "msf": [
+        5.36,
+        "cw"
+      ]
+    },
+    "Hyderabad": {
+      "rent": [
+        76.8,
+        "crem1"
+      ],
+      "vac": [
+        24.2,
+        "crem1"
+      ],
+      "centres": [
+        273,
+        "vest"
+      ],
+      "sal": [
+        10.4,
+        "sal"
+      ],
+      "share": [
+        37,
+        "cw"
+      ]
+    },
+    "Pune": {
+      "rent": [
+        90.2,
+        "crem1"
+      ],
+      "vac": [
+        15.5,
+        "crem1"
+      ],
+      "centres": [
+        178,
+        "vest"
+      ],
+      "sal": [
+        9.5,
+        "sal"
+      ],
+      "share": [
+        52,
+        "cw"
+      ],
+      "msf": [
+        3.01,
+        "cw"
+      ]
+    },
+    "Chennai": {
+      "rent": [
+        83.3,
+        "crem1"
+      ],
+      "vac": [
+        11.3,
+        "crem1"
+      ],
+      "centres": [
+        162,
+        "vest"
+      ],
+      "sal": [
+        7.6,
+        "sal"
+      ],
+      "share": [
+        46,
+        "cw"
+      ]
+    },
+    "Delhi NCR": {
+      "rent": [
+        102.9,
+        "crem1"
+      ],
+      "msf": [
+        2.37,
+        "cw"
+      ]
+    },
+    "Mumbai": {
+      "rent": [
+        167.1,
+        "crem2"
+      ],
+      "msf": [
+        2.23,
+        "cw"
+      ]
+    }
+  },
+  "states": [
+    {
+      "s": "Karnataka",
+      "p": "GCC Policy 2024-29",
+      "b": "50% stipend and IP reimbursement, 20% skilling cost refund, 40% innovation lab funding, fast-tracked approvals",
+      "tg": [
+        "skilling"
+      ],
+      "st": "in force",
+      "src": "pol"
+    },
+    {
+      "s": "Maharashtra",
+      "p": "GCC Policy 2025 (from 3 Nov 2025)",
+      "b": "20% capital subsidy or 10-20% rent subsidy (not both), payroll support up to Rs 50,000 per high-skill employee per month, 5% interest subsidy, GCC parks in Mumbai, Pune, Nagpur, Nashik",
+      "tg": [
+        "capital",
+        "rent",
+        "payroll"
+      ],
+      "st": "in force",
+      "src": "pol"
+    },
+    {
+      "s": "Uttar Pradesh",
+      "p": "GCC Policy 2025 (6 May 2025)",
+      "b": "30-50% land subsidy, 25% capital subsidy, payroll rebates, R&D and local hiring incentives",
+      "tg": [
+        "capital",
+        "land",
+        "payroll"
+      ],
+      "st": "in force",
+      "src": "pol"
+    },
+    {
+      "s": "Madhya Pradesh",
+      "p": "GCC Policy 2025 (14 Feb 2025)",
+      "b": "Capital subsidy, rent support, payroll assistance, R&D incentives, nodal agency",
+      "tg": [
+        "capital",
+        "rent",
+        "payroll"
+      ],
+      "st": "in force",
+      "src": "pol"
+    },
+    {
+      "s": "Andhra Pradesh",
+      "p": "GCC Policy 4.0 2024-29",
+      "b": "Salary reimbursements, concessional power, land through the LIFT scheme",
+      "tg": [
+        "payroll",
+        "power",
+        "land"
+      ],
+      "st": "in force",
+      "src": "pol"
+    },
+    {
+      "s": "Odisha",
+      "p": "State approach",
+      "b": "Capital subsidies with land and tax rebates, data infrastructure focus",
+      "tg": [
+        "capital",
+        "land"
+      ],
+      "st": "verify",
+      "src": "pol"
+    },
+    {
+      "s": "Gujarat",
+      "p": "GCC Policy 2025-30",
+      "b": "Subsidies tied to the GIFT City ecosystem. Rates not captured in sources reviewed.",
+      "tg": [],
+      "st": "verify",
+      "src": "pol"
+    },
+    {
+      "s": "Telangana",
+      "p": "Second ICT Policy 2021-26",
+      "b": "Period ends in 2026. Check for a successor policy.",
+      "tg": [],
+      "st": "renewal",
+      "src": "pol"
+    },
+    {
+      "s": "Tamil Nadu",
+      "p": "Special scheme for GCCs",
+      "b": "A dedicated scheme is reported. Terms not captured in sources reviewed.",
+      "tg": [],
+      "st": "verify",
+      "src": "pol"
+    },
+    {
+      "s": "Kerala",
+      "p": "In preparation",
+      "b": "A GCC policy is being prepared to expand existing tech parks.",
+      "tg": [],
+      "st": "pending",
+      "src": "pol"
+    }
+  ],
+  "launch": [
+    {
+      "id": "eor",
+      "name": "Employer of record (EOR)",
+      "from": 0.4,
+      "to": 6,
+      "label": "First hire in 2-3 days, pilot in about 6 weeks",
+      "blurb": "Hire without your own entity. Good for testing talent and cost.",
+      "src": "tl"
+    },
+    {
+      "id": "bot",
+      "name": "Build-operate-transfer (BOT)",
+      "from": 4,
+      "to": 6,
+      "label": "Hiring can start in 4-6 weeks",
+      "blurb": "A partner builds and runs the centre, then transfers it to you.",
+      "src": "tl"
+    },
+    {
+      "id": "cap",
+      "name": "Own captive entity",
+      "from": 0,
+      "to": 78,
+      "label": "Up to 18 months at scale",
+      "blurb": "Full control of entity and IP. Heaviest lift on incorporation and compliance.",
+      "src": "tl"
+    }
+  ],
+  "providers": [
+    {
+      "n": "Provider A (sample)",
+      "k": "Setup advisor",
+      "claim": 40,
+      "ver": 31,
+      "ev": "Press releases name 12 clients. Filings and headcount ramps confirm 31 of the 40 claimed."
+    },
+    {
+      "n": "Provider B (sample)",
+      "k": "Payroll and EOR",
+      "claim": 120,
+      "ver": 118,
+      "ev": "Job postings and client confirmations match 118 of 120 claimed engagements."
+    },
+    {
+      "n": "Provider C (sample)",
+      "k": "Real estate",
+      "claim": 25,
+      "ver": 9,
+      "ev": "Lease registrations support 9 of 25 claimed deals. The rest match no public record."
+    }
+  ],
+  "pipeline": {
+    "expect": [
+      {
+        "label": "Hyderabad, next 12 months",
+        "lo": 50,
+        "hi": 70,
+        "src": "ficci"
+      },
+      {
+        "label": "India, per year (Vestian average)",
+        "lo": 150,
+        "hi": 150,
+        "src": "vest"
+      },
+      {
+        "label": "India, last two years (JLL, 200+)",
+        "lo": 200,
+        "hi": 200,
+        "src": "jll"
+      },
+      {
+        "label": "Maharashtra policy target",
+        "lo": 400,
+        "hi": 400,
+        "src": "pol"
+      }
+    ],
+    "announcements": []
+  },
+  "meta": {
+    "collectedAt": null,
+    "via": "curated"
+  }
+}

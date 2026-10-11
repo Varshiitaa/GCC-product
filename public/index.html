@@ -1,0 +1,393 @@
+<title>GCC Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a set of drafting sheets. Fixed index rail on the left, one framed sheet per question, a title block at the foot of each. */
+:root{
+  --paper:#EDF2F8; --card:#F8FAFD; --grid:#D6E1EE; --ink:#0E2240; --muted:#51647F; --line:#9FB4CD;
+  --blue:#1B4FA8; --blue-soft:#DCE7F8; --gold:#C98300; --gold-soft:#FBEBC6; --red:#C73E1D; --red-soft:#FADCD3; --green:#0F7B5F; --green-soft:#D6F0E7;
+  --head:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"Public Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0A1F3D; --card:#0F2A4E; --grid:#16345C; --ink:#E8F0FB; --muted:#9DB2D0; --line:#2F5384;
+  --blue:#7FB0FF; --blue-soft:#17325E; --gold:#FFC233; --gold-soft:#3C3010; --red:#FF8566; --red-soft:#401E16; --green:#4FD1A8; --green-soft:#0E3A30; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0A1F3D; --card:#0F2A4E; --grid:#16345C; --ink:#E8F0FB; --muted:#9DB2D0; --line:#2F5384;
+  --blue:#7FB0FF; --blue-soft:#17325E; --gold:#FFC233; --gold-soft:#3C3010; --red:#FF8566; --red-soft:#401E16; --green:#4FD1A8; --green-soft:#0E3A30; color-scheme:dark}
+*{box-sizing:border-box}
+body{background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;color:var(--ink);font:15px/1.55 var(--body);padding-inline:16px;padding-block:20px 56px}
+.app{max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start}
+h1,h2,h3{font-family:var(--head);margin:0;text-wrap:balance;letter-spacing:.01em}
+.rail{position:sticky;top:20px;display:grid;gap:18px}
+.brand{font:700 34px/1 var(--head);letter-spacing:.02em;text-transform:uppercase}
+.brand small{display:block;font:500 11px var(--mono);letter-spacing:.08em;color:var(--muted);margin-top:6px;text-transform:uppercase}
+.idx{display:grid;gap:4px}
+.idx button{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:8px;text-align:left;font:500 15px var(--body);background:none;border:1px solid transparent;color:var(--ink);padding:8px;cursor:pointer}
+.idx button b{font:500 12px var(--mono);border:1px solid var(--line);padding:2px 0;text-align:center;color:var(--muted)}
+.idx button:hover{border-color:var(--line)}
+.idx button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.idx button[aria-selected="true"] b{border-color:var(--paper);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.live{font:400 11px/1.5 var(--mono);color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.live b{color:var(--ink);font-weight:500}
+.sheet{background:var(--card);border:2px solid var(--ink);outline:1px solid var(--ink);outline-offset:4px;padding:26px;display:grid;gap:22px;min-width:0}
+.sheet[hidden]{display:none}
+.sh{display:grid;gap:6px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.sh .no{font:500 12px var(--mono);letter-spacing:.1em;color:var(--gold);text-transform:uppercase}
+.sh h2{font-size:clamp(30px,5vw,46px);font-weight:700;line-height:1.02;text-transform:uppercase}
+.sh p{margin:0;color:var(--muted);max-width:68ch}
+.tb{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));border:1px solid var(--ink);font:400 11px var(--mono);margin-top:4px}
+.tb div{padding:6px 10px;border-right:1px solid var(--line);min-width:0}
+.tb div:last-child{border-right:0}
+.tb span{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:10px}
+.tb b{font-weight:500;overflow-wrap:anywhere}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px}
+.box{border:1px solid var(--line);background:var(--paper);padding:16px;min-width:0}
+.box h3{font-size:22px;font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.cap{font:400 11px/1.5 var(--mono);color:var(--muted);margin:0 0 10px}
+.kpis{display:flex;gap:28px;flex-wrap:wrap}
+.kpi b{display:block;font:700 44px/1 var(--head);color:var(--ink)}
+.kpi span{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kpi.hot b{color:var(--red)}
+.rows{display:grid;gap:12px}
+.r{display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr);gap:12px;align-items:center}
+.r .n{font-size:13px;line-height:1.3}.r .n small{display:block;font:400 11px var(--mono);color:var(--muted)}
+.tr{position:relative;height:24px;border-left:1px solid var(--ink);background:linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/25% 100%}
+.fl{position:absolute;inset:3px auto 3px 0;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font:500 12px var(--mono);color:#fff;white-space:nowrap;min-width:max-content}
+.fl.gcc{background:var(--blue)} .fl.centres{background:var(--gold);color:#1A1200} .fl.derived{background:repeating-linear-gradient(45deg,var(--blue) 0 3px,transparent 3px 7px);color:var(--ink);border:1px solid var(--blue)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fl.gcc{color:#06152B}}
+:root[data-theme="dark"] .fl.gcc{color:#06152B}
+.fl.ink{background:var(--ink);color:var(--paper)}
+.fl.hatch{background:repeating-linear-gradient(45deg,var(--gold) 0 3px,transparent 3px 7px);border:1px solid var(--gold);color:var(--ink)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font:400 11px var(--mono);color:var(--muted);margin-top:12px}
+.leg i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-2px}
+.band{position:relative;height:26px;background:var(--card);border:1px solid var(--line);margin-top:6px}
+.band b{position:absolute;top:0;bottom:0;background:var(--red-soft);border-inline:2px solid var(--red)}
+.band i{position:absolute;top:6px;width:12px;height:12px;background:var(--ink);transform:rotate(45deg);margin-left:-6px}
+.stack{display:flex;height:34px;border:1px solid var(--ink)}
+.stack div{display:flex;align-items:center;justify-content:center;font:500 12px var(--mono);color:#fff;min-width:0;overflow:hidden}
+.pill{display:inline-block;font:500 11px var(--mono);padding:2px 8px;border:1px solid currentColor;color:var(--blue)}
+.pill.ok{color:var(--green)} .pill.warn{color:var(--gold)} .pill.bad{color:var(--red)}
+.age{font:500 10px var(--mono);padding:1px 6px;border:1px solid currentColor;margin-left:6px;white-space:nowrap}
+.age.ok{color:var(--green)} .age.mid{color:var(--gold)} .age.old{color:var(--red)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:500 13px var(--body);background:var(--card);color:var(--ink);border:1px solid var(--ink);padding:7px 12px;cursor:pointer}
+.btn:hover{background:var(--blue-soft)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px 20px}
+.sl{display:grid;gap:2px}.sl span{display:flex;justify-content:space-between;font-size:13px}
+input[type=range]{width:100%;accent-color:var(--gold)}
+select,input[type=number]{font:13px var(--mono);padding:6px 8px;border:1px solid var(--ink);background:var(--card);color:var(--ink);width:100%;min-width:0}
+label{font-size:13px;font-weight:500}
+.rk{display:grid;grid-template-columns:26px 94px minmax(0,1fr) auto;gap:10px;align-items:center;padding-block:10px;border-top:1px solid var(--line)}
+.rk:first-of-type{border-top:0}
+.dots{display:flex;gap:3px}.dots i{width:7px;height:7px;border:1px solid var(--ink)}.dots i.on{background:var(--green);border-color:var(--green)}
+.note{font-size:12px;color:var(--muted)}
+.svgw{width:100%;overflow-x:auto}
+svg text{font-family:var(--mono)}
+.ax{fill:var(--muted);font-size:11px}.lb{fill:var(--ink);font-size:12px;font-weight:500}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:13px}
+th{font:500 10px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--ink)}
+td{padding:4px 6px;border-bottom:1px solid var(--line)}
+td.c{font:500 13px var(--head);text-transform:uppercase;font-size:16px}
+td input.ed{padding:4px 6px}
+td input.ov{border-color:var(--gold);background:var(--gold-soft)}
+.mx{display:grid;gap:0;border:1px solid var(--ink)}
+.mxh,.mxr{display:grid;grid-template-columns:minmax(120px,1.2fr) repeat(6,minmax(44px,.5fr)) minmax(70px,.6fr);align-items:center;gap:0}
+.mxh{background:var(--ink);color:var(--paper);font:500 10px var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.mxh div,.mxr>div{padding:8px 6px;text-align:center;min-width:0}
+.mxh div:first-child,.mxr>div:first-child{text-align:left}
+.mxh .sel{background:var(--gold);color:#1A1200}
+.mxr{border-top:1px solid var(--line)}
+.mxr.dim{opacity:.45}
+.mxr b{font:600 17px var(--head);text-transform:uppercase}
+.mxr small{display:block;font-size:11px;color:var(--muted)}
+.mxd{grid-column:1/-1;padding:0 8px 10px;font-size:12px;color:var(--muted)}
+.dot{display:inline-block;width:14px;height:14px;background:var(--blue)}
+.dot.no{background:transparent;border:1px solid var(--line)}
+.sample{border:1px dashed var(--gold);background:var(--gold-soft);color:var(--ink);padding:8px 12px;font-size:13px}
+.route{border:1px solid var(--ink);padding:14px;background:var(--card);display:grid;gap:4px}
+.route.best{background:var(--green-soft);border-color:var(--green)}
+.route h3{font-size:22px;text-transform:uppercase}
+.gt{position:relative;height:26px;margin-top:10px;background:linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/16.6667% 100%;border-left:1px solid var(--ink)}
+.mk{position:absolute;top:-8px;bottom:-8px;border-left:2px dashed var(--red);z-index:2}
+.mkl{position:absolute;top:-24px;font:500 11px var(--mono);color:var(--red);transform:translateX(-50%);white-space:nowrap}
+ul.src{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+ul.src li{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;font-size:13px}
+a{color:var(--blue)}
+.edge{font:500 12px var(--mono)}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static}
+  .idx{grid-auto-flow:column;overflow-x:auto;grid-auto-columns:max-content}
+  .live{display:none}
+  .sheet{padding:18px}
+  .r{grid-template-columns:1fr}
+  .rk{grid-template-columns:22px 80px minmax(0,1fr)}.rk .dots{display:none}
+  .mxh,.mxr{grid-template-columns:minmax(96px,1.4fr) repeat(6,minmax(28px,.4fr))}
+  .mxh div:last-child,.mxr>div:last-child{display:none}
+}
+@media (prefers-reduced-motion:no-preference){.fl{transition:width .3s}}
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">GCC Atlas<small>Evidence sheets for India's GCC market</small></div>
+    <nav class="idx" id="idx" role="tablist"></nav>
+    <div class="live" id="live">Loading data...</div>
+  </aside>
+  <main style="min-width:0">
+
+  <section class="sheet" id="s-a1">
+    <div class="sh"><span class="no">Sheet A1</span><h2>How many GCCs are there?</h2><p>Each figure is quoted from a published source with its own unit and date. Bars show the unit each source uses. Where the unit is unclear, the sheet says so.</p></div>
+    <div class="grid2">
+      <div class="box"><div class="kpis"><div class="kpi hot"><b id="k-spread">-</b><span>highest vs lowest claim</span></div><div class="kpi"><b id="k-n">-</b><span>claims compared</span></div></div>
+        <div class="rows" id="b-claims" style="margin-top:16px"></div>
+        <div class="leg"><span><i style="background:var(--blue)"></i>GCCs or companies</span><span><i style="background:var(--gold)"></i>Centres</span><span><i style="background:repeating-linear-gradient(45deg,var(--blue) 0 3px,transparent 3px 7px);border:1px solid var(--blue)"></i>Derived by Atlas</span></div></div>
+      <div class="box"><h3>City counts disagree too</h3><p class="cap">Band = lowest to highest published count. Diamonds = individual sources.</p><div id="b-cityclaims"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="box"><h3>Where the GCCs sit</h3><p class="cap">Share of India's GCCs by city, Vestian. Hatched = derived by Atlas from Vestian's totals.</p><div class="stack" id="b-share"></div><div class="leg" id="b-sharel"></div></div>
+      <div class="box"><h3>Market size, USD billion</h3><p class="cap">Nasscom-Zinnov estimate and projection.</p><div class="rows" id="b-market"></div></div>
+    </div>
+    <div class="tb"><div><span>Sheet</span><b>A1 of 7</b></div><div><span>Question</span><b>Count</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  <section class="sheet" id="s-a2" hidden>
+    <div class="sh"><span class="no">Sheet A2</span><h2>Which city fits your GCC?</h2><p>Set what matters. Atlas ranks cities that have at least four of six metrics and lists the rest as data gaps. You can overwrite any number in the table below to test your own data; charts and ranking update at once.</p></div>
+    <div class="box"><div class="btns" id="presets"></div><div class="sliders" id="sliders" style="margin-top:14px"></div></div>
+    <div class="grid2">
+      <div class="box"><h3>Ranking</h3><p class="cap">Score 0-100, relative to the cities shown. Dots show metric coverage.</p><div id="rank"></div></div>
+      <div class="box"><h3>Rent against space</h3><p class="cap">Rs per sq ft per month (across) against vacancy % (up). Bubble area = peer GCCs. Top left is cheaper with more space.</p><div class="svgw" id="scatter"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="box"><h3>GCC leasing, H1 2026</h3><p class="cap">Million sq ft leased by GCCs. Cushman &amp; Wakefield.</p><div class="rows" id="b-msf"></div></div>
+      <div class="box"><h3>GCC share of Q2 leasing</h3><p class="cap">Percent of each city's leasing taken by GCCs.</p><div class="rows" id="b-share2"></div></div>
+    </div>
+    <div class="box"><h3>Data table: edit to test your own numbers</h3><p class="cap">Gold cells are your edits, kept in this browser only. Clear a cell to mark it as no data.</p>
+      <div class="btns" style="margin-bottom:10px"><button class="btn" id="reset">Reset to published data</button></div>
+      <div class="tw"><table><thead><tr id="eh"></tr></thead><tbody id="eb"></tbody></table></div>
+      <p class="note" style="margin:10px 0 0">Rents mix Q1 and Q2 CY26 broker summaries. Brokers define micro-markets differently, so treat gaps of a few rupees as noise.</p></div>
+    <div class="tb"><div><span>Sheet</span><b>A2 of 7</b></div><div><span>Question</span><b>City</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  <section class="sheet" id="s-a3" hidden>
+    <div class="sh"><span class="no">Sheet A3</span><h2>What does each state offer?</h2><p>Pick the benefits you need. States matching all of them rise to the top. States whose policy terms are not yet captured stay dimmed so you know to check the official notification.</p></div>
+    <div class="box"><div class="btns" id="chips"></div><p class="note" id="incn" style="margin:10px 0 0"></p></div>
+    <div class="mx" id="mx"></div>
+    <div class="tb"><div><span>Sheet</span><b>A3 of 7</b></div><div><span>Question</span><b>Incentives</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  <section class="sheet" id="s-a4" hidden>
+    <div class="sh"><span class="no">Sheet A4</span><h2>How should you launch?</h2><p>Three routes are in common use. Set your scale and urgency, and the red line shows when you need first hires against how long each route takes.</p></div>
+    <div class="box"><div class="sliders">
+      <div class="sl"><span><label for="hc">First-year headcount</label><b class="edge" id="hcv">40</b></span><input type="range" id="hc" min="5" max="500" step="5" value="40"></div>
+      <div class="sl"><label for="wk">First hires needed within</label><select id="wk"><option value="3">3 weeks</option><option value="8" selected>8 weeks</option><option value="16">16 weeks</option><option value="30">30 weeks</option></select></div>
+      <div class="sl"><label for="ent">Own legal entity from day one</label><select id="ent"><option value="no" selected>Not required</option><option value="yes">Required</option></select></div></div></div>
+    <div class="box"><h3>Time to first hires, in weeks</h3><p class="cap">Bars show the published range for each route. Captive is shown as up to 18 months at scale.</p><div class="rows" id="gantt" style="padding-top:26px"></div></div>
+    <div class="grid2" id="routes"></div>
+    <p class="note">Rule of thumb from advisor sources, not a quote. Timelines vary with function, hiring volume and how fast headquarters decides.</p>
+    <div class="tb"><div><span>Sheet</span><b>A4 of 7</b></div><div><span>Question</span><b>Route</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  <section class="sheet" id="s-a5" hidden>
+    <div class="sh"><span class="no">Sheet A5</span><h2>Who actually delivers?</h2><p>The hardest data and the most valuable: what a provider claims against what outside records confirm. This sheet shows the format Atlas would publish.</p></div>
+    <div class="sample">Illustrative sample. These providers and numbers are made up to show the format. No real firm is rated.</div>
+    <div class="btns"><button class="btn" id="ev" aria-pressed="false">Show evidence behind each number</button></div>
+    <div class="grid2" id="prov"></div>
+    <div class="tb"><div><span>Sheet</span><b>A5 of 7</b></div><div><span>Question</span><b>Delivery</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  <section class="sheet" id="s-a6" hidden>
+    <div class="sh"><span class="no">Sheet A6</span><h2>Which GCCs are coming next?</h2><p>Published expectations for new centres, plus announcements collected by the Atlas API. Time frames differ, so the bars are not additive.</p></div>
+    <div class="grid2">
+      <div class="box"><h3>Expected new GCCs</h3><p class="cap">Published expectations, each over a different period.</p><div class="rows" id="b-expect"></div></div>
+      <div class="box"><h3>Announcements by city</h3><p class="cap">From the latest API collection. Counts only what the collector found.</p><div class="rows" id="b-annc"></div></div>
+    </div>
+    <div class="box"><h3>Latest announcements</h3><p class="cap" id="annc-cap"></p><ul class="src" id="annl"></ul></div>
+    <div class="tb"><div><span>Sheet</span><b>A6 of 7</b></div><div><span>Question</span><b>Pipeline</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  <section class="sheet" id="s-a7" hidden>
+    <div class="sh"><span class="no">Sheet A7</span><h2>Sources and freshness</h2><p>Every source behind this prototype, with its publication date and age measured against today's date in your browser. Anything older than 12 months is flagged.</p></div>
+    <div class="box"><ul class="src" id="srcl"></ul></div>
+    <div class="box"><h3>Keeping it current</h3><p style="margin:6px 0 0;max-width:70ch">The page reads <span class="edge">data.json</span> on every load. Replace the file with fresh numbers and every chart updates with no code change. There is no public feed for GCC statistics, so a production Atlas would add scheduled collection from filings, press releases and broker reports.</p></div>
+    <div class="tb"><div><span>Sheet</span><b>A7 of 7</b></div><div><span>Question</span><b>Sources</b></div><div><span>Data file</span><b class="df">-</b></div><div><span>Today</span><b class="td">-</b></div></div>
+  </section>
+
+  </main>
+</div>
+
+<script>
+var EMBED={"version":"2026-10-12","sources":{"zn26":{"name":"Zinnov-nasscom India GCC Landscape 2026 (via Flexiple)","url":"https://flexiple.com/gcc/statistics","date":"2026-02-01"},"zin25":{"name":"Zinnov, 5 shifts in India's GCC story in 2025","url":"https://zinnov.com/centers-of-excellence/5-shifts-defining-indias-global-capability-centers-gccs-story-in-2025-blog","date":"2026-01-08"},"vest":{"name":"Vestian Research (via IANS and Realty Today)","url":"https://ianslive.in/india-houses-nearly-53-pc-of-worlds-global-capability-centres--20250721143925","date":"2025-07-21"},"ficci":{"name":"FICCI and Anarock, Hyderabad report (via YourStory)","url":"https://yourstory.com/2026/09/hyderabad-houses-515-gccs-to-add-50-70-in-next-1-year-report","date":"2026-09-01"},"jll":{"name":"JLL India (via Flexiple)","url":"https://flexiple.com/gcc/statistics","date":"2026-02-01"},"kagov":{"name":"Karnataka and legal summary (via Mondaq)","url":"https://www.mondaq.com/choosing-the-right-location-in-india-for-your-gcc/1819112","date":"2026-07-17"},"crem1":{"name":"Office market summary, Q1 CY26 (Crematrix)","url":"https://www.crematrix.com/blog/india-office-market-q1-cy26-key-trends-and-city-wise-performance/","date":"2026-03-31"},"crem2":{"name":"Office market summary, Q2 CY26 (Crematrix)","url":"https://www.crematrix.com/blog/?p=3949","date":"2026-06-30"},"cw":{"name":"Cushman & Wakefield Q2 2026 Office Market Beat (via Asianet)","url":"https://newsable.asianetnews.com/business/gcc-leasing-surges-38-in-h1-2026-bengaluru-remains-top-market-articleshow-fc71mzn","date":"2026-08-21"},"sal":{"name":"Engineer pay by city (Flexiple)","url":"https://flexiple.com/gcc/statistics","date":"2026-08-01"},"reu":{"name":"Nasscom-Zinnov market size (via Reuters)","url":"https://theprint.in/india/indias-global-centre-market-to-grow-to-105-billion-by-2030-says-nasscom-zinnov-report/2263317/","date":"2024-12-01"},"pol":{"name":"State GCC policy summaries (Taxguru, ICAI, Finance Story, SSF)","url":"https://taxguru.in/?p=1036491","date":"2025-11-03"},"tl":{"name":"Launch timelines (Wisemonk, ANSR, Vinsys)","url":"https://www.wisemonk.io/blogs/timeline-to-launch-a-gcc-in-india","date":"2026-01-01"}},"claims":[{"label":"Vestian Research","note":"stated as GCCs","value":1700,"kind":"gcc","src":"vest"},{"label":"Zinnov","note":"stated as centres, end 2025","value":1760,"kind":"centres","src":"zin25"},{"label":"Flexiple compilation","note":"top of a 1,700-1,950 range","value":1950,"kind":"gcc","src":"zn26"},{"label":"Zinnov-nasscom FY26","note":"companies with a GCC","value":2117,"kind":"gcc","src":"zn26"},{"label":"FICCI-Anarock, implied","note":"Hyderabad 515 is about 20%","value":2575,"kind":"derived","src":"ficci"},{"label":"Zinnov-nasscom FY26","note":"individual centres","value":3728,"kind":"centres","src":"zn26"}],"cityClaims":[{"city":"Bengaluru","points":[[487,"Vestian","vest"],[500,"Karnataka govt, 500+","kagov"],[875,"legal summary, 875+ units","kagov"],[900,"JLL, 900+ units","jll"]]},{"city":"Hyderabad","points":[[273,"Vestian","vest"],[515,"FICCI-Anarock, Mar 2026","ficci"]]}],"share":{"src":"vest","parts":[{"label":"Bengaluru","pct":29,"derived":false},{"label":"Hyderabad","pct":16,"derived":true},{"label":"Pune","pct":11,"derived":false},{"label":"Chennai","pct":10,"derived":false},{"label":"NCR + Mumbai","pct":28,"derived":true},{"label":"Other","pct":6,"derived":true}]},"market":{"fy24":64.6,"lo2030":99,"hi2030":105,"src":"reu"},"cities":{"Bengaluru":{"rent":[93.7,"crem2"],"vac":[9.6,"crem2"],"centres":[487,"vest"],"share":[52,"cw"],"msf":[5.36,"cw"]},"Hyderabad":{"rent":[76.8,"crem1"],"vac":[24.2,"crem1"],"centres":[273,"vest"],"sal":[10.4,"sal"],"share":[37,"cw"]},"Pune":{"rent":[90.2,"crem1"],"vac":[15.5,"crem1"],"centres":[178,"vest"],"sal":[9.5,"sal"],"share":[52,"cw"],"msf":[3.01,"cw"]},"Chennai":{"rent":[83.3,"crem1"],"vac":[11.3,"crem1"],"centres":[162,"vest"],"sal":[7.6,"sal"],"share":[46,"cw"]},"Delhi NCR":{"rent":[102.9,"crem1"],"msf":[2.37,"cw"]},"Mumbai":{"rent":[167.1,"crem2"],"msf":[2.23,"cw"]}},"states":[{"s":"Karnataka","p":"GCC Policy 2024-29","b":"50% stipend and IP reimbursement, 20% skilling cost refund, 40% innovation lab funding, fast-tracked approvals","tg":["skilling"],"st":"in force","src":"pol"},{"s":"Maharashtra","p":"GCC Policy 2025 (from 3 Nov 2025)","b":"20% capital subsidy or 10-20% rent subsidy (not both), payroll support up to Rs 50,000 per high-skill employee per month, 5% interest subsidy, GCC parks in Mumbai, Pune, Nagpur, Nashik","tg":["capital","rent","payroll"],"st":"in force","src":"pol"},{"s":"Uttar Pradesh","p":"GCC Policy 2025 (6 May 2025)","b":"30-50% land subsidy, 25% capital subsidy, payroll rebates, R&D and local hiring incentives","tg":["capital","land","payroll"],"st":"in force","src":"pol"},{"s":"Madhya Pradesh","p":"GCC Policy 2025 (14 Feb 2025)","b":"Capital subsidy, rent support, payroll assistance, R&D incentives, nodal agency","tg":["capital","rent","payroll"],"st":"in force","src":"pol"},{"s":"Andhra Pradesh","p":"GCC Policy 4.0 2024-29","b":"Salary reimbursements, concessional power, land through the LIFT scheme","tg":["payroll","power","land"],"st":"in force","src":"pol"},{"s":"Odisha","p":"State approach","b":"Capital subsidies with land and tax rebates, data infrastructure focus","tg":["capital","land"],"st":"verify","src":"pol"},{"s":"Gujarat","p":"GCC Policy 2025-30","b":"Subsidies tied to the GIFT City ecosystem. Rates not captured in sources reviewed.","tg":[],"st":"verify","src":"pol"},{"s":"Telangana","p":"Second ICT Policy 2021-26","b":"Period ends in 2026. Check for a successor policy.","tg":[],"st":"renewal","src":"pol"},{"s":"Tamil Nadu","p":"Special scheme for GCCs","b":"A dedicated scheme is reported. Terms not captured in sources reviewed.","tg":[],"st":"verify","src":"pol"},{"s":"Kerala","p":"In preparation","b":"A GCC policy is being prepared to expand existing tech parks.","tg":[],"st":"pending","src":"pol"}],"launch":[{"id":"eor","name":"Employer of record (EOR)","from":0.4,"to":6,"label":"First hire in 2-3 days, pilot in about 6 weeks","blurb":"Hire without your own entity. Good for testing talent and cost.","src":"tl"},{"id":"bot","name":"Build-operate-transfer (BOT)","from":4,"to":6,"label":"Hiring can start in 4-6 weeks","blurb":"A partner builds and runs the centre, then transfers it to you.","src":"tl"},{"id":"cap","name":"Own captive entity","from":0,"to":78,"label":"Up to 18 months at scale","blurb":"Full control of entity and IP. Heaviest lift on incorporation and compliance.","src":"tl"}],"providers":[{"n":"Provider A (sample)","k":"Setup advisor","claim":40,"ver":31,"ev":"Press releases name 12 clients. Filings and headcount ramps confirm 31 of the 40 claimed."},{"n":"Provider B (sample)","k":"Payroll and EOR","claim":120,"ver":118,"ev":"Job postings and client confirmations match 118 of 120 claimed engagements."},{"n":"Provider C (sample)","k":"Real estate","claim":25,"ver":9,"ev":"Lease registrations support 9 of 25 claimed deals. The rest match no public record."}],"pipeline":{"expect":[{"label":"Hyderabad, next 12 months","lo":50,"hi":70,"src":"ficci"},{"label":"India, per year (Vestian average)","lo":150,"hi":150,"src":"vest"},{"label":"India, last two years (JLL, 200+)","lo":200,"hi":200,"src":"jll"},{"label":"Maharashtra policy target","lo":400,"hi":400,"src":"pol"}],"announcements":[]},"meta":{"collectedAt":null,"via":"curated"}};
+var DATA=EMBED,LOADED="built-in snapshot";
+var $=function(s){return document.querySelector(s)};
+var NOW=new Date();
+var fmt=function(n){return n.toLocaleString("en-IN")};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")};
+var SHEETS=[["a1","Counts"],["a2","Cities"],["a3","Incentives"],["a4","Launch"],["a5","Proof"],["a6","Pipeline"],["a7","Sources"]];
+
+function show(id){
+  SHEETS.forEach(function(t){$("#s-"+t[0]).hidden=t[0]!==id});
+  document.querySelectorAll("#idx button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.id===id)});
+  try{localStorage.setItem("atlas-sheet",id)}catch(e){}
+}
+$("#idx").innerHTML=SHEETS.map(function(t,i){return '<button role="tab" data-id="'+t[0]+'"><b>A'+(i+1)+'</b>'+t[1]+'</button>'}).join("");
+$("#idx").addEventListener("click",function(e){var b=e.target.closest("button");if(b)show(b.dataset.id)});
+
+function months(d){return (NOW-new Date(d))/(30.44*864e5)}
+function ageCls(m){return m<=6?"ok":m<=12?"mid":"old"}
+function ageTxt(m){return m<1?"<1 mo":m<24?Math.round(m)+" mo":(m/12).toFixed(1)+" yr"}
+function badge(k){var s=DATA.sources[k];if(!s)return"";var m=months(s.date);return '<span class="age '+ageCls(m)+'" title="'+esc(s.name)+', '+s.date+'">'+ageTxt(m)+'</span>'+(s.ai?'<span class="age mid" title="Collected by the Atlas API using AI search. Verify before relying on it.">AI</span>':'')}
+function safeUrl(u){return typeof u==="string"&&/^https:\/\//.test(u)}
+function src(k){return DATA.sources[k]?esc(DATA.sources[k].name):k}
+
+/* ---------- status ---------- */
+function status(){
+  var used={},n=0;
+  var use=function(k){if(k){used[k]=1}};
+  DATA.claims.forEach(function(c){use(c.src);n++});
+  DATA.cityClaims.forEach(function(c){c.points.forEach(function(p){use(p[2]);n++})});
+  DATA.share.parts.forEach(function(){n++});use(DATA.share.src);use(DATA.market.src);n+=3;
+  Object.keys(DATA.cities).forEach(function(c){Object.keys(DATA.cities[c]).forEach(function(k){use(DATA.cities[c][k][1]);n++})});
+  DATA.states.forEach(function(s){use(s.src);n++});((DATA.pipeline&&DATA.pipeline.expect)||[]).forEach(function(e){use(e.src);n++});
+  var ks=Object.keys(used),ms=ks.map(function(k){return months(DATA.sources[k].date)}),stale=ms.filter(function(m){return m>12}).length;
+  var today=NOW.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+  $("#live").innerHTML='Data: <b>'+LOADED+'</b><br>'+(DATA.meta&&DATA.meta.collectedAt?'Refreshed <b>'+ageTxt(months(DATA.meta.collectedAt))+'</b> ago<br>':'')+'<b>'+n+'</b> data points<br><b>'+ks.length+'</b> sources<br>Newest <b>'+ageTxt(Math.min.apply(null,ms))+'</b> old<br>Oldest <b>'+ageTxt(Math.max.apply(null,ms))+'</b> old<br>'+(stale?'<span style="color:var(--red)">'+stale+' source'+(stale>1?'s':'')+' over 12 months</span><br>':'')+'Today <b>'+today+'</b>';
+  document.querySelectorAll(".df").forEach(function(e){e.textContent=LOADED});
+  document.querySelectorAll(".td").forEach(function(e){e.textContent=today});
+}
+
+/* ---------- A1 ---------- */
+function a1(){
+  var C=DATA.claims,vals=C.map(function(c){return c.value}),mx=Math.max.apply(null,vals),mn=Math.min.apply(null,vals),M=4000;
+  $("#k-spread").textContent=(mx/mn).toFixed(1)+"x";$("#k-n").textContent=C.length;
+  $("#b-claims").innerHTML=C.map(function(c){return '<div class="r"><div class="n">'+esc(c.label)+badge(c.src)+'<small>'+esc(c.note)+'</small></div><div class="tr"><div class="fl '+c.kind+'" style="width:'+(c.value/M*100)+'%">'+fmt(c.value)+'</div></div></div>'}).join("");
+  $("#b-cityclaims").innerHTML=DATA.cityClaims.map(function(x){
+    var v=x.points.map(function(p){return p[0]}),lo=Math.min.apply(null,v),hi=Math.max.apply(null,v),M2=1000;
+    return '<div style="padding-block:10px;border-top:1px solid var(--line)"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font:600 20px var(--head);text-transform:uppercase">'+esc(x.city)+'</b><span class="pill bad">'+(hi/lo).toFixed(1)+'x gap</span></div><div class="band"><b style="left:'+lo/M2*100+'%;width:'+(hi-lo)/M2*100+'%"></b>'+x.points.map(function(p){return '<i style="left:'+p[0]/M2*100+'%" title="'+esc(p[1])+': '+p[0]+'"></i>'}).join("")+'</div><div class="note edge" style="margin-top:6px">'+x.points.map(function(p){return p[0]+' '+esc(p[1])+badge(p[2])}).join(" · ")+'</div></div>'}).join("");
+  var col=["var(--blue)","var(--gold)","#4B7FD6","#8F6B1B","var(--muted)","var(--line)"];
+  $("#b-share").innerHTML=DATA.share.parts.map(function(p,i){return '<div style="width:'+p.pct+'%;background:'+(p.derived?'repeating-linear-gradient(45deg,'+col[i]+' 0 3px,transparent 3px 7px)':col[i])+';'+(i===1||i===5?'color:var(--ink)':'')+'" title="'+esc(p.label)+' '+p.pct+'%">'+(p.pct>=9?p.pct+'%':'')+'</div>'}).join("");
+  $("#b-sharel").innerHTML=DATA.share.parts.map(function(p,i){return '<span><i style="background:'+col[i]+'"></i>'+esc(p.label)+' '+p.pct+'%</span>'}).join("")+badge(DATA.share.src);
+  var m=DATA.market;
+  $("#b-market").innerHTML='<div class="r"><div class="n">FY2024<small>estimate</small></div><div class="tr"><div class="fl ink" style="width:'+m.fy24/120*100+'%">'+m.fy24+'</div></div></div><div class="r"><div class="n">By 2030<small>projection range</small></div><div class="tr"><div class="fl hatch" style="width:'+m.hi2030/120*100+'%">'+m.lo2030+' - '+m.hi2030+'</div></div></div><div class="note">'+src(m.src)+badge(m.src)+'</div>';
+}
+
+/* ---------- A2 ---------- */
+var CR=[
+ {k:"rent",l:"Rent",u:"Rs/sq ft/mo",low:true},{k:"vac",l:"Space availability",u:"% vacancy"},{k:"centres",l:"Peer GCCs",u:"centres"},
+ {k:"sal",l:"Engineer pay",u:"Rs lakh",low:true},{k:"share",l:"GCC share of Q2 leasing",u:"%"},{k:"msf",l:"GCC leasing H1 2026",u:"msf"}];
+var W={};CR.forEach(function(c){W[c.k]=3});
+var PRE={"Balanced":{rent:3,vac:3,centres:3,sal:3,share:3,msf:3},"Cost first":{rent:5,vac:2,centres:1,sal:5,share:1,msf:0},"Peers and momentum":{rent:1,vac:1,centres:5,sal:1,share:5,msf:4},"Find space fast":{rent:2,vac:5,centres:1,sal:1,share:2,msf:2}};
+var OVR={};try{OVR=JSON.parse(localStorage.getItem("atlas-ovr")||"{}")}catch(e){OVR={}}
+function val(city,k){var o=OVR[city];if(o&&Object.prototype.hasOwnProperty.call(o,k))return o[k];var d=DATA.cities[city]&&DATA.cities[city][k];return d?d[0]:null}
+function saveOvr(){try{localStorage.setItem("atlas-ovr",JSON.stringify(OVR))}catch(e){}}
+function cityNames(){return Object.keys(DATA.cities)}
+function setW(){CR.forEach(function(c){$("#w-"+c.k).value=W[c.k];$("#wv-"+c.k).textContent=W[c.k]})}
+function buildCities(){
+  $("#presets").innerHTML=Object.keys(PRE).map(function(k,i){return '<button class="btn" data-p="'+k+'" aria-pressed="'+(i===0)+'">'+k+'</button>'}).join("");
+  $("#sliders").innerHTML=CR.map(function(c){return '<div class="sl"><span><label for="w-'+c.k+'">'+c.l+'</label><b class="edge" id="wv-'+c.k+'">3</b></span><input type="range" id="w-'+c.k+'" min="0" max="5" value="3"></div>'}).join("");
+  $("#eh").innerHTML='<th>City</th>'+CR.map(function(c){return '<th>'+c.l+' <span style="text-transform:none">('+c.u+')</span></th>'}).join("");
+  $("#eb").innerHTML=cityNames().map(function(n,i){return '<tr><td class="c">'+esc(n)+'</td>'+CR.map(function(c){var v=val(n,c.k),o=OVR[n]&&Object.prototype.hasOwnProperty.call(OVR[n],c.k);return '<td><input class="ed'+(o?' ov':'')+'" type="number" step="any" id="e-'+i+'-'+c.k+'" data-c="'+esc(n)+'" data-k="'+c.k+'" value="'+(v==null?'':v)+'" placeholder="no data" aria-label="'+esc(n)+' '+c.l+'"></td>'}).join("")+'</tr>'}).join("");
+}
+function cities(){
+  var names=cityNames();
+  var res=names.map(function(n){var num=0,den=0,cov=0;
+    CR.forEach(function(c){var v=val(n,c.k);if(v==null)return;cov++;
+      var all=names.map(function(x){return val(x,c.k)}).filter(function(x){return x!=null}),lo=Math.min.apply(null,all),hi=Math.max.apply(null,all),nm=hi===lo?1:(v-lo)/(hi-lo);
+      if(c.low)nm=1-nm;num+=W[c.k]*nm;den+=W[c.k]});
+    return {n:n,cov:cov,score:den?num/den*100:0}});
+  var ok=res.filter(function(r){return r.cov>=4}).sort(function(a,b){return b.score-a.score}),gap=res.filter(function(r){return r.cov<4});
+  var row=function(r,i){return '<div class="rk"><b class="edge">'+(i||"-")+'</b><b style="font:600 18px var(--head);text-transform:uppercase">'+esc(r.n)+'</b>'+(i?'<div class="tr"><div class="fl gcc" style="width:'+Math.max(r.score,5)+'%">'+Math.round(r.score)+'</div></div>':'<span class="note">Not enough data to rank</span>')+'<div class="dots" title="'+r.cov+' of 6 metrics">'+CR.map(function(c){return '<i class="'+(val(r.n,c.k)!=null?'on':'')+'"></i>'}).join("")+'</div></div>'};
+  $("#rank").innerHTML=ok.map(function(r,i){return row(r,i+1)}).join("")+'<div class="cap" style="margin-top:14px">Data gaps</div>'+gap.map(function(r){return row(r,0)}).join("");
+  scatter(names);
+  var bars=function(el,k,M,unit){var xs=names.filter(function(n){return val(n,k)!=null}).sort(function(a,b){return val(b,k)-val(a,k)});
+    $(el).innerHTML=xs.length?xs.map(function(n){return '<div class="r"><div class="n">'+esc(n)+'</div><div class="tr"><div class="fl gcc" style="width:'+Math.min(val(n,k)/M*100,100)+'%">'+val(n,k)+unit+'</div></div></div>'}).join("")+'<div class="note">'+src("cw")+badge("cw")+'. Cities with no value are not reported.</div>':'<p class="note">No data.</p>'};
+  bars("#b-msf","msf",6," msf");bars("#b-share2","share",60,"%");
+}
+function scatter(names){
+  var pts=names.filter(function(n){return val(n,"rent")!=null&&val(n,"vac")!=null}).map(function(n){return {n:n,x:val(n,"rent"),y:val(n,"vac"),r:val(n,"centres")}});
+  var miss=names.filter(function(n){return !(val(n,"rent")!=null&&val(n,"vac")!=null)});
+  if(!pts.length){$("#scatter").innerHTML='<p class="note">Needs rent and vacancy for at least one city.</p>';return}
+  var W0=560,H0=340,L=48,R=20,T=16,B=40,xmin=70,xmax=115,ymin=0,ymax=30;
+  var X=function(v){return L+(Math.min(Math.max(v,xmin),xmax)-xmin)/(xmax-xmin)*(W0-L-R)},Y=function(v){return H0-B-(Math.min(Math.max(v,ymin),ymax)-ymin)/(ymax-ymin)*(H0-T-B)};
+  var s='<svg viewBox="0 0 '+W0+' '+H0+'" width="100%" role="img" aria-label="Scatter of office rent against vacancy for each city" style="min-width:420px">';
+  s+='<rect x="'+L+'" y="'+T+'" width="'+(X(90)-L)+'" height="'+(Y(15)-T)+'" fill="var(--green-soft)"/><text class="ax" x="'+(L+6)+'" y="'+(T+14)+'">cheaper, more space</text>';
+  for(var gx=70;gx<=110;gx+=10){s+='<line x1="'+X(gx)+'" x2="'+X(gx)+'" y1="'+T+'" y2="'+(H0-B)+'" stroke="var(--grid)"/><text class="ax" x="'+X(gx)+'" y="'+(H0-B+16)+'" text-anchor="middle">'+gx+'</text>'}
+  for(var gy=0;gy<=30;gy+=10){s+='<line y1="'+Y(gy)+'" y2="'+Y(gy)+'" x1="'+L+'" x2="'+(W0-R)+'" stroke="var(--grid)"/><text class="ax" x="'+(L-8)+'" y="'+(Y(gy)+4)+'" text-anchor="end">'+gy+'%</text>'}
+  s+='<line x1="'+L+'" x2="'+L+'" y1="'+T+'" y2="'+(H0-B)+'" stroke="var(--ink)"/><line x1="'+L+'" x2="'+(W0-R)+'" y1="'+(H0-B)+'" y2="'+(H0-B)+'" stroke="var(--ink)"/>';
+  s+='<text class="ax" x="'+((L+W0-R)/2)+'" y="'+(H0-6)+'" text-anchor="middle">rent, Rs per sq ft per month</text>';
+  pts.forEach(function(p){var rad=p.r!=null?Math.max(7,Math.sqrt(p.r)*0.85):7,cx=X(p.x),cy=Y(p.y);
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+rad+'" fill="var(--blue)" fill-opacity=".35" stroke="var(--blue)" stroke-width="2"/><text class="lb" x="'+(cx+rad+5)+'" y="'+(cy+4)+'">'+esc(p.n)+'</text>'});
+  s+='</svg>';
+  $("#scatter").innerHTML=s+(miss.length?'<p class="note" style="margin:8px 0 0">Not plotted, missing rent or vacancy: '+miss.map(esc).join(", ")+'.</p>':'')+'<p class="note" style="margin:6px 0 0">'+src("crem1")+badge("crem1")+' · '+src("crem2")+badge("crem2")+'</p>';
+}
+
+/* ---------- A3 ---------- */
+var TAGS={capital:"Capital",rent:"Rent",payroll:"Payroll",land:"Land",skilling:"Skilling",power:"Power"};
+var SEL={};
+var STL={"in force":["ok","In force"],verify:["warn","Verify terms"],renewal:["bad","Check renewal"],pending:["warn","Not notified"]};
+function a3(){
+  $("#chips").innerHTML=Object.keys(TAGS).map(function(k){return '<button class="btn" data-t="'+k+'" aria-pressed="'+!!SEL[k]+'">'+TAGS[k]+'</button>'}).join("");
+  var sel=Object.keys(SEL).filter(function(k){return SEL[k]});
+  var rows=DATA.states.map(function(x){return {x:x,m:x.tg.length>0&&sel.every(function(t){return x.tg.indexOf(t)>-1})}});
+  rows.sort(function(a,b){return (b.m)-(a.m)});
+  var n=rows.filter(function(r){return r.m}).length;
+  $("#incn").textContent=sel.length?n+" of "+DATA.states.length+" states offer all of: "+sel.map(function(k){return TAGS[k]}).join(", ")+".":DATA.states.filter(function(x){return x.tg.length}).length+" of "+DATA.states.length+" states have benefit terms captured. Select benefits to filter.";
+  var hd='<div class="mxh"><div>State</div>'+Object.keys(TAGS).map(function(k){return '<div class="'+(SEL[k]?'sel':'')+'">'+TAGS[k]+'</div>'}).join("")+'<div>Status</div></div>';
+  $("#mx").innerHTML=hd+rows.map(function(r){var x=r.x,dim=sel.length&&!r.m,st=STL[x.st]||["warn",x.st];
+    return '<div class="mxr'+(dim?' dim':'')+'"><div><b>'+esc(x.s)+'</b><small>'+esc(x.p)+'</small></div>'+Object.keys(TAGS).map(function(k){return '<div>'+(x.tg.length?'<span class="dot'+(x.tg.indexOf(k)>-1?'':' no')+'" title="'+TAGS[k]+'"></span>':'<span class="note">?</span>')+'</div>'}).join("")+'<div><span class="pill '+st[0]+'">'+st[1]+'</span></div><div class="mxd">'+esc(x.b)+badge(x.src)+'</div></div>'}).join("");
+}
+
+/* ---------- A4 ---------- */
+function launch(){
+  var hc=+$("#hc").value,wk=+$("#wk").value,ent=$("#ent").value==="yes";$("#hcv").textContent=hc;
+  var L=DATA.launch,sc={eor:(hc<=30?3:hc<=80?1:0)+(wk<=8?2:0)-(ent?5:0),bot:(hc>=20&&hc<=250?3:1)+(wk<=16?1:0)-(ent?1:0),cap:(hc>=100?3:0)+(ent?4:0)+(wk>=30?2:0)-(wk<=8?2:0)};
+  var best=L.reduce(function(a,b){return sc[b.id]>sc[a.id]?b:a}),M=78;
+  $("#gantt").innerHTML=L.map(function(r){var hit=r.to<=wk,cap=r.id==="cap";
+    return '<div class="r"><div class="n">'+esc(r.name)+badge(r.src)+'<small>'+esc(r.label)+'</small></div><div class="gt"><div class="fl '+(cap?'hatch':hit?'gcc':'ink')+'" style="left:'+r.from/M*100+'%;width:'+Math.max((r.to-r.from)/M*100,1.5)+'%;min-width:0;padding:0"></div><div class="mk" style="left:'+wk/M*100+'%"></div>'+(r===L[0]?'<div class="mkl" style="left:'+wk/M*100+'%">need by wk '+wk+'</div>':'')+'</div></div>'}).join("")+'<div class="r"><div></div><div class="edge" style="display:flex;justify-content:space-between;color:var(--muted);font-size:11px"><span>0</span><span>13</span><span>26</span><span>39</span><span>52</span><span>65</span><span>78 wk</span></div></div>';
+  $("#routes").innerHTML=L.map(function(r){var b=r===best;return '<div class="route'+(b?' best':'')+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><h3>'+esc(r.name)+'</h3>'+(b?'<span class="pill ok">Suggested start</span>':'')+'</div><div class="edge">'+esc(r.label)+'</div><div class="note">'+esc(r.blurb)+'</div></div>'}).join("");
+}
+
+/* ---------- A5 ---------- */
+function a5(){
+  var on=$("#ev").getAttribute("aria-pressed")==="true",M=Math.max.apply(null,DATA.providers.map(function(p){return p.claim}));
+  $("#prov").innerHTML=DATA.providers.map(function(p){var pc=Math.round(p.ver/p.claim*100);
+    return '<div class="box" style="display:grid;gap:10px"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font:600 20px var(--head);text-transform:uppercase">'+esc(p.n)+'</b><span class="pill">'+esc(p.k)+'</span></div><div class="rows"><div class="r" style="grid-template-columns:70px 1fr"><div class="n">Claimed</div><div class="tr"><div class="fl hatch" style="width:'+p.claim/M*100+'%">'+p.claim+'</div></div></div><div class="r" style="grid-template-columns:70px 1fr"><div class="n">Verified</div><div class="tr"><div class="fl '+(pc>=85?'gcc':'ink')+'" style="width:'+p.ver/M*100+'%">'+p.ver+'</div></div></div></div><div class="edge">'+pc+'% of claims verified</div>'+(on?'<div class="note">'+esc(p.ev)+'</div>':'')+'<span class="pill '+(pc>=85?'ok':'bad')+'" style="justify-self:start">'+(pc>=85?'Claims hold up':'Claims not yet backed')+'</span></div>'}).join("");
+}
+
+/* ---------- A6 ---------- */
+function a6(){
+  var ks=Object.keys(DATA.sources).sort(function(a,b){return new Date(DATA.sources[b].date)-new Date(DATA.sources[a].date)});
+  $("#srcl").innerHTML=ks.map(function(k){var s=DATA.sources[k];return '<li>'+(safeUrl(s.url)?'<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a>':esc(s.name))+'<span class="edge">'+s.date+'</span>'+badge(k)+'</li>'}).join("");
+}
+
+function a6p(){
+  var P=DATA.pipeline||{},E=P.expect||[],A=P.announcements||[],M=450;
+  $("#b-expect").innerHTML=E.length?E.map(function(e){return '<div class="r"><div class="n">'+esc(e.label)+badge(e.src)+'</div><div class="tr"><div class="fl gcc" style="width:'+Math.min(e.hi/M*100,100)+'%">'+(e.lo===e.hi?e.lo:e.lo+'-'+e.hi)+'</div></div></div>'}).join(""):'<p class="note">No data.</p>';
+  var by={};A.forEach(function(a){by[a.city]=(by[a.city]||0)+1});
+  var ks=Object.keys(by).sort(function(a,b){return by[b]-by[a]}),mx=Math.max.apply(null,ks.map(function(k){return by[k]}).concat([1]));
+  $("#b-annc").innerHTML=ks.length?ks.map(function(k){return '<div class="r"><div class="n">'+esc(k)+'</div><div class="tr"><div class="fl hatch" style="width:'+Math.max(by[k]/mx*100,8)+'%">'+by[k]+'</div></div></div>'}).join(""):'<p class="note">No announcements loaded yet. Run Atlas with an API key and the collector fills this in.</p>';
+  $("#annc-cap").textContent=A.length?A.length+' announcements collected by AI search. Each links to its source. Verify before relying on one.':'Nothing collected yet.';
+  $("#annl").innerHTML=A.map(function(a){return '<li><b>'+esc(a.company)+'</b><span>'+esc(a.city)+'</span><span class="edge">'+esc(a.date)+'</span><span class="pill warn">AI-collected</span>'+(safeUrl(a.url)?'<a href="'+esc(a.url)+'" target="_blank" rel="noopener">source</a>':'')+'<span class="note" style="flex-basis:100%">'+esc(a.note||"")+'</span></li>'}).join("");
+}
+function renderAll(){status();a1();cities();a3();launch();a5();a6p();a6()}
+/* events */
+$("#presets").addEventListener("click",function(e){var p=e.target.dataset.p;if(!p)return;Object.assign(W,PRE[p]);setW();document.querySelectorAll("#presets .btn").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.p===p)});cities()});
+$("#sliders").addEventListener("input",function(e){if(!e.target.id)return;var k=e.target.id.slice(2);W[k]=+e.target.value;$("#wv-"+k).textContent=W[k];document.querySelectorAll("#presets .btn").forEach(function(b){b.setAttribute("aria-pressed","false")});cities()});
+$("#eb").addEventListener("input",function(e){var t=e.target;if(!t.dataset.c)return;var c=t.dataset.c,k=t.dataset.k;OVR[c]=OVR[c]||{};OVR[c][k]=t.value===""?null:parseFloat(t.value);t.classList.add("ov");saveOvr();cities()});
+$("#reset").addEventListener("click",function(){OVR={};saveOvr();buildCities();setW();cities()});
+$("#chips").addEventListener("click",function(e){var t=e.target.dataset.t;if(!t)return;SEL[t]=!SEL[t];a3()});
+["hc","wk","ent"].forEach(function(i){$("#"+i).addEventListener("input",launch)});
+$("#ev").addEventListener("click",function(){var on=$("#ev").getAttribute("aria-pressed")==="true";$("#ev").setAttribute("aria-pressed",!on);$("#ev").textContent=on?"Show evidence behind each number":"Hide evidence";a5()});
+
+function boot(){buildCities();setW();renderAll()}
+boot();
+var start="a1";try{var s=localStorage.getItem("atlas-sheet");if(s&&SHEETS.some(function(t){return t[0]===s}))start=s}catch(e){}
+show(start);
+function load(u){return fetch(u,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})}
+function ok(j){return j&&j.claims&&j.cities}
+load("api/data").then(function(j){if(ok(j)){LOADED="live API";return j}return load("data.json").then(function(k){if(ok(k)){LOADED="data.json";return k}return null})}).then(function(j){if(j){DATA=j;boot()}});
+</script>
